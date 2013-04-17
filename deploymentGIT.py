@@ -63,6 +63,13 @@ def main():
                       default=False,
                       help="specify the enviroment where to deploy the code, this value will be concatenated to te beginning of var/www/html")
 
+    parser.add_option("-m", "--minimize",
+                      action="store_true",
+                      dest="minimize",
+                      default=False,
+                      help="minimize the files before sending to server")
+
+
     parser.add_option("-b", "--basedir",
                       action="store",
                       dest="basedir",
@@ -114,8 +121,11 @@ def main():
     
     createTarFromREPO(repoName,tagVersion,options.gitpath);
     uncompressTar(repoName);
-    createLogFile(repoName,tagVersion)
-    minimizeJSfromFolder(repoName);
+    createLogFile(repoName,tagVersion);
+    
+    if options.minimize:
+        minimizeJSfromFolder(repoName);
+
     rsyncFolder(repoName,finalPath,options.ipserver,options.pemfile);
 
 if __name__ == "__main__":
